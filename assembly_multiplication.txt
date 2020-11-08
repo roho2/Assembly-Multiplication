@@ -1,0 +1,95 @@
+// Made by Robert Hollinger
+// Last edited 11/7/2020
+
+//Z = (a*b)*(c*d)
+	ORG	0 
+	
+//Clear z, a, b, c, and d to 0 so program can be used multiple times in a row
+	LOAD       Zero
+	STORE      A
+	STORE      B
+	STORE      C
+  STORE      D
+	STORE      Z
+	STORE      AB
+	STORE      CD
+	CLEAR
+
+// Input A, B, C, D
+	INPUT       	//Get Decimal input for A
+	OUTPUT
+	STORE      A
+	CLEAR
+	INPUT       	//Get Decimal input for B		
+	OUTPUT
+	STORE      B	
+	CLEAR
+	INPUT       	//Get Decimal input for C
+	OUTPUT
+	STORE      C	
+	CLEAR
+	INPUT	       //Get Decimal input for D
+	OUTPUT
+	STORE      D
+	CLEAR
+	
+	//Jump to A*B function and then C*D function
+	//Stores values of PC into the variable so you can jump back 
+	JNS        returnAB
+	JNS        returnCD
+	JNS	       returnZ
+
+	//Load and print final result, then end program
+	LOAD       Z
+	OUTPUT
+	HALT
+
+//Calculate A*B
+returnAB, HEX       0
+loopAB,  LOAD       AB
+	ADD        A
+	STORE      AB
+	LOAD       B
+	SUBT       One
+	STORE      B
+	//If B>0 skip, else return
+	SKIPCOND   800
+	JUMPI      returnAB
+	JUMP       loopAB
+
+//Calculate C*D
+returnCD, HEX       0
+loopCD,  LOAD       CD
+	ADD        C
+	STORE      CD
+	LOAD       D
+	SUBT       One
+	STORE      D
+	//If D>0 skip, else return
+	SKIPCOND   800
+	JUMPI      returnCD
+	JUMP       loopCD
+
+//Calculate (AB)*(CD)
+returnZ, HEX       0
+loopZ,  LOAD       Z
+	ADD        AB
+	STORE      Z
+	LOAD       CD
+	SUBT       One
+	STORE      CD
+	//If CD>0 skip, else return
+	SKIPCOND   800
+	JUMPI      returnZ
+	JUMP       loopZ
+
+// Variable Declarations 
+Z,      DEC	       0
+A,      DEC	       0
+B,      DEC        0
+C,      DEC        0
+D,      DEC	       0
+AB,     DEC	       0
+CD,     DEC	       0
+Zero,   DEC	       0
+One,    DEC        1
